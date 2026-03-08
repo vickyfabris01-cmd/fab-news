@@ -70,6 +70,7 @@ async function fetchNews(category = "general", q = "") {
             kenyaArticles = kenyaData.articles.slice(0, 3).map((article) => ({
               title: article.title,
               description: article.description,
+              content: article.content, // Full article content
               url: article.url,
               urlToImage: article.image || null,
               publishedAt: article.publishedAt,
@@ -96,6 +97,7 @@ async function fetchNews(category = "general", q = "") {
               .map((article) => ({
                 title: article.title,
                 description: article.description,
+                content: article.content, // Full article content
                 url: article.url,
                 urlToImage: article.image || null,
                 publishedAt: article.publishedAt,
@@ -152,6 +154,7 @@ async function fetchNews(category = "general", q = "") {
           const articles = data.articles.map((article) => ({
             title: article.title,
             description: article.description,
+            content: article.content, // Full article content
             url: article.url,
             urlToImage: article.image || null, // GNews uses 'image' field
             publishedAt: article.publishedAt,
@@ -183,62 +186,74 @@ function getSampleArticles(cat) {
   const banks = {
     general: [
       {
-        title: "Global Leaders Convene for Emergency Climate Summit",
+        title: "🔄 Demo: Global Leaders Convene for Emergency Climate Summit",
         description:
-          "World leaders gathered in Geneva today for an emergency summit on accelerating climate action, with over 140 nations pledging to cut emissions by 50% before 2035. The agreement represents the most ambitious multinational climate commitment to date.",
-        source: { name: "Reuters" },
+          "We are still fetching real news... This is a demo article showing what the app will look like when connected to live news sources.",
+        content:
+          "We are still fetching real news from our sources. This demo article shows the full content display that will appear once the app connects to live news APIs. The real articles will contain current, up-to-date information from trusted news sources. Please wait while we establish the connection...",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 1800000).toISOString(),
         url: "#",
         urlToImage: null,
-        _emoji: "🌍",
+        _emoji: "🔄",
+        _isFallback: true,
       },
       {
         title:
-          "Breakthrough in Quantum Communication Achieved by MIT Researchers",
+          "🔄 Demo: Breakthrough in Quantum Communication Achieved by MIT Researchers",
         description:
-          "Scientists at MIT have demonstrated quantum-encrypted data transmission over 1,000 kilometers of standard fiber optic cables, breaking all previous distance records and paving the way for an unhackable global internet.",
-        source: { name: "Nature" },
+          "We are still fetching real news... This demo shows the article format and layout that will be used for real news.",
+        content:
+          "We are still fetching real news from our sources. This is a placeholder article demonstrating the full content view. Once connected, you'll see real breaking news, technology updates, and current events from reputable news organizations. The app is working to establish API connections...",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 3600000).toISOString(),
         url: "#",
         urlToImage: null,
-        _emoji: "🔬",
+        _emoji: "🔄",
+        _isFallback: true,
       },
       {
         title:
-          "WHO Declares New Global Health Initiative to Eliminate Malaria by 2035",
+          "🔄 Demo: WHO Declares New Global Health Initiative to Eliminate Malaria by 2035",
         description:
-          "The World Health Organization launched a $30 billion initiative to eradicate malaria across sub-Saharan Africa using advanced mRNA vaccine technology, drone delivery networks, and AI-powered outbreak prediction systems.",
-        source: { name: "AP News" },
+          "We are still fetching real news... Demo content showing the app's article display capabilities.",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 7200000).toISOString(),
         url: "#",
         urlToImage: null,
-        _emoji: "🏥",
+        _emoji: "🔄",
+        _isFallback: true,
       },
       {
-        title: "Major Central Banks Signal Coordinated Rate Cut Strategy",
+        title:
+          "🔄 Demo: Major Central Banks Signal Coordinated Rate Cut Strategy",
         description:
-          "The Federal Reserve, ECB, and Bank of England issued rare joint guidance indicating synchronized interest rate reductions over Q3, triggering a global equity rally and boosting emerging market currencies.",
-        source: { name: "Financial Times" },
+          "We are still fetching real news... This placeholder demonstrates the business news section.",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 10800000).toISOString(),
         url: "#",
         urlToImage: null,
-        _emoji: "📉",
+        _emoji: "🔄",
+        _isFallback: true,
       },
       {
-        title: "SpaceX Successfully Lands Starship on Mars for First Time",
+        title:
+          "🔄 Demo: SpaceX Successfully Lands Starship on Mars for First Time",
         description:
-          "In a historic achievement, SpaceX's Starship completed its first uncrewed Mars landing, transmitting high-definition footage from the Martian surface. The mission carries scientific instruments and precursor technology for future crewed missions.",
-        source: { name: "The Verge" },
+          "We are still fetching real news... Demo article showing science and technology news format.",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 14400000).toISOString(),
         url: "#",
         urlToImage: null,
-        _emoji: "🚀",
+        _emoji: "🔄",
+        _isFallback: true,
       },
       {
-        title: "UN Security Council Passes Landmark AI Governance Resolution",
+        title:
+          "🔄 Demo: UN Security Council Passes Landmark AI Governance Resolution",
         description:
-          "A unanimous UN Security Council resolution established the first global framework for artificial intelligence governance, mandating transparency requirements and safety audits for frontier AI systems deployed by nation-states.",
-        source: { name: "BBC News" },
+          "We are still fetching real news... This demonstrates the international news display.",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 18000000).toISOString(),
         url: "#",
         urlToImage: null,
@@ -248,208 +263,263 @@ function getSampleArticles(cat) {
     technology: [
       {
         title:
-          "Apple Unveils Neural Processing Chip 10x Faster Than Previous Generation",
+          "🔄 Demo: Apple Unveils Neural Processing Chip 10x Faster Than Previous Generation",
         description:
-          "Apple's new M4 Ultra chip features a dedicated neural engine capable of running large language models entirely on-device, marking a significant milestone in edge AI computing. The chip is expected to power the next iPhone lineup.",
-        source: { name: "TechCrunch" },
+          "We are still fetching real news... This demo shows technology news format and layout.",
+        content:
+          "We are still fetching real technology news from our sources. This placeholder demonstrates how tech articles will appear in the app, including chip announcements, AI breakthroughs, and product launches from companies like Apple, Google, and others. Please wait while we connect to live news feeds...",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 2700000).toISOString(),
         url: "#",
         urlToImage: null,
-        _emoji: "🍎",
+        _emoji: "🔄",
+        _isFallback: true,
       },
       {
-        title: "Google DeepMind Solves 50-Year-Old Protein Folding Mystery",
+        title:
+          "🔄 Demo: Google DeepMind Solves 50-Year-Old Protein Folding Mystery",
         description:
-          "DeepMind researchers have published findings resolving a fundamental mystery in protein dynamics that eluded scientists for decades. The breakthrough could accelerate drug discovery for cancer and neurodegenerative diseases.",
-        source: { name: "Wired" },
+          "We are still fetching real news... Demo content for science and technology section.",
+        content:
+          "We are still fetching real science and technology news. This demo article shows the format for AI research, scientific breakthroughs, and technological innovations that will appear once the app connects to live news sources.",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 5400000).toISOString(),
         url: "#",
         urlToImage: null,
-        _emoji: "🧬",
+        _emoji: "🔄",
+        _isFallback: true,
       },
       {
-        title: "Open-Source AI Model Surpasses GPT-4 on All Major Benchmarks",
+        title:
+          "🔄 Demo: Open-Source AI Model Surpasses GPT-4 on All Major Benchmarks",
         description:
-          "A coalition of European AI labs released an open-source language model that outperforms all proprietary competitors on reasoning, coding, and multilingual tasks, reigniting debates about the democratization of AI.",
-        source: { name: "Ars Technica" },
+          "We are still fetching real news... This demonstrates AI and tech news display.",
+        content:
+          "We are still fetching real AI and technology news from our sources. This placeholder shows how articles about artificial intelligence, machine learning, and open-source projects will be displayed in the app.",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 9000000).toISOString(),
         url: "#",
         urlToImage: null,
-        _emoji: "🧠",
+        _emoji: "🔄",
+        _isFallback: true,
       },
       {
-        title: "Samsung Launches World's First Rollable Smartphone",
+        title: "🔄 Demo: Samsung Launches World's First Rollable Smartphone",
         description:
-          "Samsung Galaxy Roll features a display that expands from phone to tablet size using micro-LED flexible technology. The device, priced at $1,899, is already seeing record pre-orders in Asian markets.",
-        source: { name: "The Verge" },
+          "We are still fetching real news... Demo showing mobile technology news format.",
+        content:
+          "We are still fetching real mobile and consumer technology news. This demo illustrates how smartphone launches, hardware announcements, and gadget news will appear in the technology section.",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 12600000).toISOString(),
         url: "#",
         urlToImage: null,
-        _emoji: "📱",
+        _emoji: "🔄",
+        _isFallback: true,
       },
     ],
     business: [
       {
         title:
-          "NVIDIA Market Cap Crosses $5 Trillion, Now World's Largest Company",
+          "🔄 Demo: NVIDIA Market Cap Crosses $5 Trillion, Now World's Largest Company",
         description:
-          "NVIDIA surpassed Apple and Microsoft to become the world's most valuable company, driven by insatiable demand for its H200 GPUs powering AI datacenters globally. The stock has risen 600% in two years.",
-        source: { name: "Bloomberg" },
+          "We are still fetching real news... This demo shows business and finance news format.",
+        content:
+          "We are still fetching real business and financial news from our sources. This placeholder demonstrates how stock market updates, company valuations, and economic news will be displayed in the business section.",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 3600000).toISOString(),
         url: "#",
         urlToImage: null,
-        _emoji: "📊",
+        _emoji: "🔄",
+        _isFallback: true,
       },
       {
-        title: "Amazon Acquires Slack in $40 Billion All-Stock Deal",
+        title: "🔄 Demo: Amazon Acquires Slack in $40 Billion All-Stock Deal",
         description:
-          "The surprise acquisition, announced after markets closed, would combine Amazon's AWS cloud dominance with Slack's enterprise communication platform, directly challenging Microsoft Teams and Google Workspace.",
-        source: { name: "WSJ" },
+          "We are still fetching real news... Demo content for business acquisitions and deals.",
+        content:
+          "We are still fetching real business news including mergers, acquisitions, and corporate deals. This demo shows the format for major business announcements and market-moving events.",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 7200000).toISOString(),
         url: "#",
         urlToImage: null,
-        _emoji: "💼",
+        _emoji: "🔄",
+        _isFallback: true,
       },
     ],
     science: [
       {
         title:
-          "James Webb Telescope Discovers Potentially Habitable Ocean World",
+          "🔄 Demo: James Webb Telescope Discovers Potentially Habitable Ocean World",
         description:
-          "Astronomers using JWST have detected chemical signatures of liquid water oceans and biological precursor molecules in the atmosphere of a rocky exoplanet 42 light-years away, marking the most promising sign of extraterrestrial life yet.",
-        source: { name: "NASA" },
+          "We are still fetching real news... This demo shows science news article format.",
+        content:
+          "We are still fetching real science news from our sources. This placeholder demonstrates how astronomy discoveries, space exploration, and scientific breakthroughs will appear in the science section.",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 5400000).toISOString(),
         url: "#",
         urlToImage: null,
-        _emoji: "🔭",
+        _emoji: "🔄",
+        _isFallback: true,
       },
       {
         title:
-          "Scientists Achieve Room-Temperature Superconductivity at Atmospheric Pressure",
+          "🔄 Demo: Scientists Achieve Room-Temperature Superconductivity at Atmospheric Pressure",
         description:
-          "A team at the University of Rochester confirmed room-temperature superconductivity in a novel hydrogen-rich compound, a discovery that could transform energy transmission, MRI technology, and quantum computing.",
-        source: { name: "Science" },
+          "We are still fetching real news... Demo content for physics and materials science.",
+        content:
+          "We are still fetching real science and research news. This demo illustrates how physics discoveries, materials science breakthroughs, and laboratory research will be presented in the app.",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 10800000).toISOString(),
         url: "#",
         urlToImage: null,
-        _emoji: "⚡",
+        _emoji: "🔄",
+        _isFallback: true,
       },
     ],
     health: [
       {
-        title: "mRNA Cancer Vaccine Shows 93% Efficacy in Phase III Trial",
+        title:
+          "🔄 Demo: mRNA Cancer Vaccine Shows 93% Efficacy in Phase III Trial",
         description:
-          "Moderna and Merck's personalized mRNA cancer vaccine demonstrated 93% efficacy in preventing melanoma recurrence in a landmark Phase III trial involving 1,800 patients. FDA approval is expected within 18 months.",
-        source: { name: "NEJM" },
+          "We are still fetching real news... This demo shows health and medical news format.",
+        content:
+          "We are still fetching real health and medical news from our sources. This placeholder demonstrates how medical breakthroughs, vaccine developments, and healthcare news will appear in the health section of the app.",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 3600000).toISOString(),
         url: "#",
         urlToImage: null,
-        _emoji: "💉",
+        _emoji: "🔄",
+        _isFallback: true,
       },
     ],
     sports: [
       // Kenyan sports (few)
       {
-        title: "Kenyan Athletes Dominate Boston Marathon",
+        title: "🔄 Demo: Kenyan Athletes Dominate Boston Marathon",
         description:
-          "Eliud Kipchoge leads Kenyan sweep of top positions, with women athletes also claiming victory in the prestigious 127th running of the race.",
-        source: { name: "Daily Nation" },
+          "We are still fetching real news... This demo shows Kenyan sports news format.",
+        content:
+          "We are still fetching real sports news from our sources. This placeholder demonstrates how Kenyan athletics, football, and sports events will appear in the sports section, including marathon results and local team performances.",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 1800000).toISOString(),
         url: "#",
         urlToImage: null,
-        _emoji: "🏃",
+        _emoji: "🔄",
         _region: "kenya",
+        _isFallback: true,
       },
       {
-        title: "Gor Mahia Wins Kenyan Premier League Title",
+        title: "🔄 Demo: Gor Mahia Wins Kenyan Premier League Title",
         description:
-          "K'Ogalo secures their 18th league championship in dramatic fashion, defeating AFC Leopards 2-1 in the final match of the season.",
-        source: { name: "The Star Kenya" },
+          "We are still fetching real news... Demo content for Kenyan football and sports.",
+        content:
+          "We are still fetching real Kenyan sports news. This demo shows how local football league results, team performances, and sports achievements will be displayed in the app.",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 3600000).toISOString(),
         url: "#",
         urlToImage: null,
-        _emoji: "⚽",
+        _emoji: "🔄",
         _region: "kenya",
+        _isFallback: true,
       },
       // England football (most)
       {
-        title: "Manchester City Clinches Premier League Title",
+        title: "🔄 Demo: Manchester City Clinches Premier League Title",
         description:
-          "Pep Guardiola's side secures their fourth Premier League championship in five years, finishing 8 points ahead of nearest rivals Arsenal.",
-        source: { name: "BBC Sport" },
+          "We are still fetching real news... This demo shows English football news format.",
+        content:
+          "We are still fetching real English football news from our sources. This placeholder demonstrates how Premier League results, FA Cup matches, and European competitions will appear in the sports section.",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 7200000).toISOString(),
         url: "#",
         urlToImage: null,
-        _emoji: "🏆",
+        _emoji: "🔄",
         _region: "england",
+        _isFallback: true,
       },
       {
-        title: "Liverpool Stuns Manchester United in FA Cup Final",
+        title: "🔄 Demo: Liverpool Stuns Manchester United in FA Cup Final",
         description:
-          "Mohamed Salah's brace helps Jurgen Klopp's team claim their tenth FA Cup victory, ending a 15-year wait for the prestigious trophy.",
-        source: { name: "Sky Sports" },
+          "We are still fetching real news... Demo content for English football competitions.",
+        content:
+          "We are still fetching real English football news. This demo illustrates how cup competitions, derby matches, and major football events will be presented in the app.",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 10800000).toISOString(),
         url: "#",
         urlToImage: null,
-        _emoji: "🏆",
-        _region: "england",
+        _emoji: "🔄",
+        _isFallback: true,
       },
       {
-        title: "Chelsea Secures Champions League Qualification",
+        title: "🔄 Demo: Chelsea Secures Champions League Qualification",
         description:
-          "Todd Boehly's investment pays dividends as the Blues finish in the top four, booking their place in Europe's elite competition next season.",
-        source: { name: "The Guardian" },
+          "We are still fetching real news... Demo showing European football qualification news.",
+        content:
+          "We are still fetching real European football news. This demo shows how Champions League qualification, European competitions, and international football will appear in the sports section.",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 14400000).toISOString(),
         url: "#",
         urlToImage: null,
-        _emoji: "⚽",
-        _region: "england",
+        _emoji: "🔄",
+        _isFallback: true,
       },
       {
-        title: "Arsenal's Title Challenge Falters Late in Season",
+        title: "🔄 Demo: Arsenal's Title Challenge Falters Late in Season",
         description:
-          "Mikel Arteta's team drops crucial points in final weeks, finishing second but setting the stage for next season's title assault.",
-        source: { name: "BBC Sport" },
+          "We are still fetching real news... Demo content for Premier League season analysis.",
+        content:
+          "We are still fetching real Premier League news. This demo demonstrates how season reviews, team performances, and league standings will be displayed in the app.",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 18000000).toISOString(),
         url: "#",
         urlToImage: null,
-        _emoji: "⚽",
+        _emoji: "🔄",
         _region: "england",
+        _isFallback: true,
       },
       {
-        title: "Tottenham Hotspur Appoints New Manager",
+        title: "🔄 Demo: Tottenham Hotspur Appoints New Manager",
         description:
-          "Club legend Ange Postecoglou takes charge of Spurs, bringing his attacking philosophy from Celtic to north London.",
-        source: { name: "Sky Sports" },
+          "We are still fetching real news... Demo content for football management changes.",
+        content:
+          "We are still fetching real football news. This demo shows how managerial appointments, coaching changes, and team news will appear in the sports section.",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 21600000).toISOString(),
         url: "#",
         urlToImage: null,
-        _emoji: "👔",
+        _emoji: "🔄",
         _region: "england",
+        _isFallback: true,
       },
       {
-        title: "Newcastle United Breaks Transfer Record",
+        title: "🔄 Demo: Newcastle United Breaks Transfer Record",
         description:
-          "Saudi-backed club signs Brazilian superstar for £120 million, signaling their intent to challenge for major honors.",
-        source: { name: "The Times" },
+          "We are still fetching real news... Demo content for football transfer news.",
+        content:
+          "We are still fetching real transfer news and football stories. This demo illustrates how player transfers, record signings, and transfer market activity will be displayed in the app.",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 25200000).toISOString(),
         url: "#",
         urlToImage: null,
-        _emoji: "💰",
+        _emoji: "🔄",
         _region: "england",
+        _isFallback: true,
       },
     ],
     entertainment: [
       {
         title:
-          "Netflix Greenlit 200-Episode Animated Series with $4 Billion Budget",
+          "🔄 Demo: Netflix Greenlit 200-Episode Animated Series with $4 Billion Budget",
         description:
-          "Netflix announced the most expensive television production in history — an animated fantasy epic spanning 200 episodes with a $4 billion budget, created by the teams behind Studio Ghibli and Pixar veterans.",
-        source: { name: "Variety" },
+          "We are still fetching real news... This demo shows entertainment and media news format.",
+        content:
+          "We are still fetching real entertainment news from our sources. This placeholder demonstrates how movie releases, TV shows, streaming announcements, and entertainment industry news will appear in the entertainment section.",
+        source: { name: "Demo Mode" },
         publishedAt: new Date(Date.now() - 5400000).toISOString(),
         url: "#",
         urlToImage: null,
-        _emoji: "🎬",
+        _emoji: "🔄",
+        _isFallback: true,
       },
     ],
   };
@@ -480,8 +550,10 @@ function renderFeed(articles) {
 
   // Featured
   const f = articles[0];
+  const isFallback = f._isFallback;
   featuredArea.innerHTML = `
-<div class="featured-card" onclick="openArticle(${0})">
+<div class="featured-card ${isFallback ? "fallback-article" : ""}" onclick="openArticle(${0})">
+  ${isFallback ? '<div class="loading-indicator"><div class="spinner"></div><span>Fetching live news...</span></div>' : ""}
   ${
     f.urlToImage
       ? `<img class="featured-img" src="${safe(f.urlToImage)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="" />`
@@ -507,9 +579,11 @@ function renderFeed(articles) {
 <div class="section-title">Latest Stories</div>
 <div class="news-grid">
   ${rest
-    .map(
-      (a, i) => `
-    <a class="news-card" href="javascript:void(0)" onclick="openArticle(${i + 1})">
+    .map((a, i) => {
+      const isFallback = a._isFallback;
+      return `
+    <a class="news-card ${isFallback ? "fallback-article" : ""}" href="javascript:void(0)" onclick="openArticle(${i + 1})">
+      ${isFallback ? '<div class="loading-indicator"><div class="spinner"></div><span>Fetching live news...</span></div>' : ""}
       <div>
         <div class="news-card-source">${safe(a.source.name)}</div>
         <div class="news-card-title">${safe(a.title)}</div>
@@ -524,8 +598,8 @@ function renderFeed(articles) {
           : `<div class="news-card-thumb-placeholder">${a._emoji || CAT_EMOJI[currentCat]}</div>`
       }
     </a>
-  `,
-    )
+  `;
+    })
     .join("")}
 </div>
 `;
@@ -569,7 +643,10 @@ function openArticle(idx) {
   const hasPrev = currentArticleIndex > 0;
   const hasNext = currentArticleIndex < filtered.length - 1;
 
+  const isFallback = a._isFallback;
+  const articleId = btoa(a.title + (a.url || "")).replace(/[^a-zA-Z0-9]/g, ""); // Create unique ID for article
   document.getElementById("modalContent").innerHTML = `
+${isFallback ? '<div class="fallback-notice"><div class="spinner"></div><span>We are still fetching real news from our sources. This is a demo article.</span></div>' : ""}
 <div class="modal-nav">
   <button class="nav-btn ${hasPrev ? "" : "disabled"}" onclick="navigateArticle(-1)" ${hasPrev ? "" : "disabled"}>
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -591,19 +668,39 @@ function openArticle(idx) {
   <span>•</span>
   <span>${safe(a.source.name)}</span>
 </div>
-<p class="modal-desc">${safe(a.description || "No description available.")}</p>
-${
-  a.url && a.url !== "#"
-    ? `<a class="modal-link" href="${safe(a.url)}" target="_blank" rel="noopener">
-  Read full article
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-    <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-  </svg>
-</a>`
-    : `<div style="color:var(--muted);font-size:.85rem">Full article link unavailable in demo mode.</div>`
-}
+<p class="modal-desc">${safe(a.content || a.description || "No content available.")}</p>
+<div class="modal-actions">
+  ${
+    a.url && a.url !== "#"
+      ? `<a class="modal-link" href="${safe(a.url)}" target="_blank" rel="noopener">
+    Read full article
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+    </svg>
+  </a>`
+      : `<div style="color:var(--muted);font-size:.85rem">${isFallback ? "Full article link will be available when connected to live news sources." : "Full article link unavailable."}</div>`
+  }
+  <button class="comment-toggle-btn" onclick="toggleComments('${articleId}')">
+    💬 Comments
+  </button>
+</div>
+<div class="comments-section" id="comments-${articleId}" style="display:none">
+  <div class="comments-list" id="comments-list-${articleId}">
+    <!-- Comments will be loaded here -->
+  </div>
+  <div class="comment-form">
+    <textarea id="comment-input-${articleId}" placeholder="Add a comment..." maxlength="500"></textarea>
+    <button class="comment-submit-btn" onclick="addComment('${articleId}')">Post Comment</button>
+  </div>
+</div>
 `;
   modal.classList.add("open");
+
+  // Load comments if section is visible
+  const commentsSection = document.getElementById(`comments-${articleId}`);
+  if (commentsSection.style.display !== "none") {
+    loadComments(articleId);
+  }
 }
 
 function navigateArticle(direction) {
@@ -611,6 +708,73 @@ function navigateArticle(direction) {
   if (newIndex >= 0 && newIndex < filtered.length) {
     openArticle(newIndex);
   }
+}
+
+// ── COMMENTS ──
+function toggleComments(articleId) {
+  const commentsSection = document.getElementById(`comments-${articleId}`);
+  const isVisible = commentsSection.style.display !== "none";
+
+  if (isVisible) {
+    commentsSection.style.display = "none";
+  } else {
+    commentsSection.style.display = "block";
+    loadComments(articleId);
+  }
+}
+
+function loadComments(articleId) {
+  const commentsList = document.getElementById(`comments-list-${articleId}`);
+  const comments = getComments(articleId);
+
+  if (comments.length === 0) {
+    commentsList.innerHTML =
+      '<div class="no-comments">No comments yet. Be the first to comment!</div>';
+    return;
+  }
+
+  commentsList.innerHTML = comments
+    .map(
+      (comment) => `
+    <div class="comment-item">
+      <div class="comment-meta">
+        <span class="comment-author">${safe(comment.author)}</span>
+        <span class="comment-time">${timeAgo(comment.timestamp)}</span>
+      </div>
+      <div class="comment-text">${safe(comment.text)}</div>
+    </div>
+  `,
+    )
+    .join("");
+}
+
+function addComment(articleId) {
+  const input = document.getElementById(`comment-input-${articleId}`);
+  const text = input.value.trim();
+
+  if (!text) return;
+
+  const comment = {
+    author: "Anonymous User",
+    text: text,
+    timestamp: new Date().toISOString(),
+  };
+
+  const comments = getComments(articleId);
+  comments.push(comment);
+  saveComments(articleId, comments);
+
+  input.value = "";
+  loadComments(articleId);
+}
+
+function getComments(articleId) {
+  const stored = localStorage.getItem(`comments-${articleId}`);
+  return stored ? JSON.parse(stored) : [];
+}
+
+function saveComments(articleId, comments) {
+  localStorage.setItem(`comments-${articleId}`, JSON.stringify(comments));
 }
 
 function closeModal(e) {
@@ -635,8 +799,10 @@ async function load(cat, q = "") {
   renderTicker(filtered);
 
   const count = filtered.length;
-  document.getElementById("statusText").textContent =
-    `${count} articles loaded · Updated just now`;
+  const isUsingFallbacks = allArticles.some((a) => a._isFallback);
+  document.getElementById("statusText").textContent = isUsingFallbacks
+    ? `🔄 Demo mode: ${count} sample articles loaded · Connect API for live news`
+    : `${count} articles loaded · Updated just now`;
 }
 
 // ── CATEGORY BUTTONS ──
