@@ -1,6 +1,6 @@
 {
-  "name": "Pulse — Live News",
-  "short_name": "Pulse",
+  "name": "Fab News — Live News",
+  "short_name": "Fab News",
   "description": "Live news from trusted sources worldwide",
   "start_url": "/index.html",
   "display": "standalone",
