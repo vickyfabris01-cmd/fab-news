@@ -1,0 +1,39 @@
+{
+  "name": "Pulse — Live News",
+  "short_name": "Pulse",
+  "description": "Live news from trusted sources worldwide",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#0a0a0f",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["news", "magazines"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Top Stories",
+      "url": "/index.html?cat=general",
+      "description": "Read top stories"
+    },
+    {
+      "name": "Technology",
+      "url": "/index.html?cat=technology",
+      "description": "Latest tech news"
+    }
+  ]
+}

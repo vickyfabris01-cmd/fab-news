@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a0a0f" />
+  <meta name="description" content="Pulse — Live news from trusted sources worldwide" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Pulse" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <title>Pulse — Live News</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --surface2: #1a1a26;
+      --border: rgba(255,255,255,0.07);
+      --accent: #e8ff47;
+      --accent2: #ff4757;
+      --text: #f0f0f8;
+      --muted: #7a7a9a;
+      --card-hover: #1e1e2e;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px;
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+      gap: 16px;
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 3px;
+      color: var(--accent);
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .logo span {
+      color: var(--text);
+      opacity: 0.3;
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      display: block;
+      margin-top: -10px;
+    }
+
+    .search-bar {
+      flex: 1;
+      max-width: 400px;
+      position: relative;
+    }
+
+    .search-bar input {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      padding: 9px 18px 9px 40px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-bar input:focus { border-color: var(--accent); }
+    .search-bar input::placeholder { color: var(--muted); }
+
+    .search-bar svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      width: 16px;
+      height: 16px;
+    }
+
+    .header-actions { display: flex; gap: 10px; align-items: center; flex-shrink: 0; }
+
+    .btn-install {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      border-radius: 999px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.78rem;
+      padding: 8px 16px;
+      cursor: pointer;
+      display: none;
+      transition: opacity 0.2s;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-install:hover { opacity: 0.85; }
+    .btn-install.visible { display: flex; align-items: center; gap: 6px; }
+
+    /* ── CATEGORY TABS ── */
+    .category-bar {
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .category-bar::-webkit-scrollbar { display: none; }
+
+    .category-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 4px;
+      padding: 10px 20px;
+      min-width: max-content;
+    }
+
+    .cat-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 6px 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+      letter-spacing: 0.3px;
+    }
+
+    .cat-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+
+    .cat-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #000;
+      font-weight: 600;
+    }
+
+    /* ── HERO TICKER ── */
+    .ticker-wrap {
+      background: var(--accent);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      height: 34px;
+    }
+
+    .ticker-label {
+      background: #000;
+      color: var(--accent);
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 2px;
+      font-size: 0.85rem;
+      padding: 0 16px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .ticker-track {
+      display: flex;
+      animation: ticker 35s linear infinite;
+      white-space: nowrap;
+      gap: 60px;
+    }
+
+    .ticker-track:hover { animation-play-state: paused; }
+
+    .ticker-item {
+      color: #000;
+      font-weight: 600;
+      font-size: 0.82rem;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+    }
+
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── MAIN LAYOUT ── */
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px 20px;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 32px;
+    }
+
+    /* ── FEATURED ── */
+    .featured-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    .featured-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    .featured-img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      display: block;
+      background: linear-gradient(135deg, var(--surface2) 0%, #1e1e30 100%);
+    }
+
+    .featured-img-placeholder {
+      width: 100%;
+      height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+    }
+
+    .featured-body { padding: 24px; }
+
+    .source-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent);
+      color: #000;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .featured-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.75rem;
+      line-height: 1.25;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    .featured-desc {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .card-meta .dot { opacity: 0.4; }
+
+    /* ── FEED GRID ── */
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 2px;
+      color: var(--text);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .news-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .news-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      display: grid;
+      grid-template-columns: 1fr 80px;
+      gap: 14px;
+      align-items: start;
+      text-decoration: none;
+    }
+
+    .news-card:hover {
+      background: var(--card-hover);
+      transform: translateX(4px);
+      box-shadow: -4px 0 0 var(--accent);
+    }
+
+    .news-card-thumb {
+      width: 80px;
+      height: 70px;
+      border-radius: 8px;
+      object-fit: cover;
+      display: block;
+      background: var(--surface2);
+      flex-shrink: 0;
+    }
+
+    .news-card-thumb-placeholder {
+      width: 80px;
+      height: 70px;
+      border-radius: 8px;
+      background: var(--surface2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      flex-shrink: 0;
+    }
+
+    .news-card-source {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .news-card-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1rem;
+      line-height: 1.35;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .news-card-time {
+      color: var(--muted);
+      font-size: 0.73rem;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar { display: flex; flex-direction: column; gap: 24px; }
+
+    .sidebar-widget {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .widget-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      color: var(--muted);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .trending-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .trending-item:last-child { border-bottom: none; }
+    .trending-item:hover { opacity: 0.75; }
+
+    .trend-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      color: var(--accent);
+      line-height: 1;
+      min-width: 28px;
+    }
+
+    .trend-text {
+      font-size: 0.85rem;
+      line-height: 1.4;
+      color: var(--text);
+    }
+
+    .trend-source {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* Source pills */
+    .sources-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .source-pill {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 12px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .source-pill:hover { border-color: var(--accent); color: var(--accent); }
+    .source-pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+
+    /* ── LOADING ── */
+    .skeleton {
+      background: linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 8px;
+    }
+
+    @keyframes shimmer {
+      from { background-position: 200% 0; }
+      to   { background-position: -200% 0; }
+    }
+
+    .sk-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 1fr 80px;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    /* ── STATUS BAR ── */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      font-size: 0.75rem;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent2);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 20px;
+      font-size: 0.85rem;
+      color: var(--text);
+      opacity: 0;
+      transition: all 0.3s;
+      z-index: 200;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── BOTTOM NAV (mobile) ── */
+    .bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(10,10,15,0.95);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border);
+      z-index: 100;
+      padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+    }
+
+    .bottom-nav-inner {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 6px 16px;
+      border-radius: 10px;
+      transition: color 0.2s;
+      font-size: 0.65rem;
+      font-weight: 500;
+    }
+
+    .nav-item.active { color: var(--accent); }
+    .nav-item svg { width: 22px; height: 22px; }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(8px);
+      z-index: 300;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal-sheet {
+      background: var(--surface);
+      border-radius: 20px 20px 0 0;
+      padding: 28px 24px;
+      width: 100%;
+      max-width: 700px;
+      max-height: 85vh;
+      overflow-y: auto;
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to   { transform: translateY(0); }
+    }
+
+    .modal-handle {
+      width: 40px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 99px;
+      margin: 0 auto 20px;
+    }
+
+    .modal-source {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .modal-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      line-height: 1.3;
+      margin-bottom: 14px;
+    }
+
+    .modal-meta {
+      display: flex;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      margin-bottom: 18px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-desc {
+      color: #b0b0c8;
+      font-size: 0.95rem;
+      line-height: 1.75;
+      margin-bottom: 22px;
+    }
+
+    .modal-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #000;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 12px 22px;
+      border-radius: 999px;
+      transition: opacity 0.2s;
+    }
+
+    .modal-link:hover { opacity: 0.85; }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: var(--surface2);
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--muted);
+    }
+
+    /* ── OFFLINE BANNER ── */
+    .offline-banner {
+      background: var(--accent2);
+      color: white;
+      text-align: center;
+      padding: 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: none;
+    }
+
+    .offline-banner.show { display: block; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .main { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .bottom-nav { display: block; }
+      body { padding-bottom: 70px; }
+      .featured-title { font-size: 1.35rem; }
+      .search-bar { max-width: 220px; }
+    }
+
+    @media (max-width: 480px) {
+      .header-inner { gap: 10px; }
+      .logo { font-size: 1.6rem; }
+      .search-bar { max-width: 160px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Offline Banner -->
+<div class="offline-banner" id="offlineBanner">
+  📡 You're offline — showing cached articles
+</div>
+
+<!-- Header -->
+<header>
+  <div class="header-inner">
+    <a href="#" class="logo">
+      PULSE
+      <span>LIVE NEWS</span>
+    </a>
+    <div class="search-bar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" id="searchInput" placeholder="Search articles…" />
+    </div>
+    <div class="header-actions">
+      <button class="btn-install" id="installBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Install
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Status Bar -->
+<div class="status-bar" id="statusBar">
+  <div class="live-dot"></div>
+  <span id="statusText">Fetching latest news…</span>
+</div>
+
+<!-- Breaking ticker -->
+<div class="ticker-wrap" id="tickerWrap" style="display:none">
+  <div class="ticker-label">⚡ BREAKING</div>
+  <div style="overflow:hidden;flex:1">
+    <div class="ticker-track" id="tickerTrack"></div>
+  </div>
+</div>
+
+<!-- Categories -->
+<div class="category-bar">
+  <div class="category-inner" id="catBar">
+    <button class="cat-btn active" data-cat="general">🌐 Top Stories</button>
+    <button class="cat-btn" data-cat="technology">💻 Tech</button>
+    <button class="cat-btn" data-cat="business">📈 Business</button>
+    <button class="cat-btn" data-cat="science">🔬 Science</button>
+    <button class="cat-btn" data-cat="health">🏥 Health</button>
+    <button class="cat-btn" data-cat="sports">⚽ Sports</button>
+    <button class="cat-btn" data-cat="entertainment">🎬 Entertainment</button>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="main" id="mainContent">
+  <!-- Feed -->
+  <div id="feedCol">
+    <!-- Skeleton -->
+    <div id="skeletonLoader">
+      <div class="sk-card"><div><div class="skeleton" style="height:12px;width:80px;margin-bottom:10px"></div><div class="skeleton" style="height:18px;margin-bottom:8px"></div><div class="skeleton" style="height:18px;width:75%;margin-bottom:8px"></div><div class="skeleton" style="height:12px;width:60px"></div></div><div class="skeleton" style="height:70px;border-radius:8px"></div></div>
+      <div class="sk-card"><div><div class="skeleton" style="height:12px;width:80px;margin-bottom:10px"></div><div class="skeleton" style="height:18px;margin-bottom:8px"></div><div class="skeleton" style="height:18px;width:75%;margin-bottom:8px"></div><div class="skeleton" style="height:12px;width:60px"></div></div><div class="skeleton" style="height:70px;border-radius:8px"></div></div>
+      <div class="sk-card"><div><div class="skeleton" style="height:12px;width:80px;margin-bottom:10px"></div><div class="skeleton" style="height:18px;margin-bottom:8px"></div><div class="skeleton" style="height:18px;width:75%;margin-bottom:8px"></div><div class="skeleton" style="height:12px;width:60px"></div></div><div class="skeleton" style="height:70px;border-radius:8px"></div></div>
+    </div>
+    <div id="featuredArea"></div>
+    <div id="feedGrid"></div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-widget">
+      <div class="widget-title">🔥 Trending</div>
+      <div id="trendingList"></div>
+    </div>
+    <div class="sidebar-widget">
+      <div class="widget-title">📰 Sources</div>
+      <div class="sources-grid">
+        <div class="source-pill"><span class="dot"></span>BBC News</div>
+        <div class="source-pill"><span class="dot"></span>Reuters</div>
+        <div class="source-pill"><span class="dot"></span>AP News</div>
+        <div class="source-pill"><span class="dot"></span>The Guardian</div>
+        <div class="source-pill"><span class="dot"></span>NPR</div>
+        <div class="source-pill"><span class="dot"></span>Al Jazeera</div>
+        <div class="source-pill"><span class="dot"></span>TechCrunch</div>
+        <div class="source-pill"><span class="dot"></span>Wired</div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Article Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal-sheet" id="modalSheet">
+    <div class="modal-handle"></div>
+    <button class="modal-close" onclick="document.getElementById('modalOverlay').classList.remove('open')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- Bottom Nav -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <div class="nav-item active" onclick="setNav(this,'general')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+      </svg>
+      Home
+    </div>
+    <div class="nav-item" onclick="setNav(this,'technology')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+      </svg>
+      Tech
+    </div>
+    <div class="nav-item" onclick="setNav(this,'science')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/>
+      </svg>
+      Science
+    </div>
+    <div class="nav-item" onclick="setNav(this,'business')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+      </svg>
+      Business
+    </div>
+    <div class="nav-item" onclick="setNav(this,'sports')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M4.93 4.93l4.24 4.24m5.66 5.66l4.24 4.24M4.93 19.07l4.24-4.24m5.66-5.66l4.24-4.24"/>
+      </svg>
+      Sports
+    </div>
+  </div>
+</nav>
+
+<script>
+// ── CONFIG ──
+const API_KEY = 'demo'; // Replace with your NewsAPI.org key
+const BASE_URL = 'https://newsapi.org/v2';
+const GNEWS_KEY = 'demo'; // Optional: GNews API key
+
+// Emoji per category
+const CAT_EMOJI = {
+  general:'🌐', technology:'💻', business:'📈',
+  science:'🔬', health:'🏥', sports:'⚽', entertainment:'🎬'
+};
+
+// Time formatter
+function timeAgo(dateStr) {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return 'Just now';
+  if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h ago`;
+  return `${Math.floor(h / 24)}d ago`;
+}
+
+// Sanitize text
+function safe(str) {
+  return (str || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// Fetch via multiple free fallbacks
+async function fetchNews(category = 'general', q = '') {
+  // Try GNews (free tier, no CORS issues)
+  try {
+    const lang = 'en';
+    const topic = category === 'general' ? 'breaking-news' : category;
+    const url = q
+      ? `https://gnews.io/api/v4/search?q=${encodeURIComponent(q)}&lang=${lang}&max=20&apikey=${GNEWS_KEY}`
+      : `https://gnews.io/api/v4/top-headlines?topic=${topic}&lang=${lang}&max=20&apikey=${GNEWS_KEY}`;
+    const r = await fetch(url);
+    if (r.ok) {
+      const d = await r.json();
+      if (d.articles && d.articles.length > 0) {
+        return d.articles.map(a => ({
+          title: a.title,
+          description: a.description,
+          url: a.url,
+          urlToImage: a.image,
+          publishedAt: a.publishedAt,
+          source: { name: a.source?.name || 'Unknown' }
+        }));
+      }
+    }
+  } catch(e) {}
+
+  // Fallback: sample curated articles
+  return getSampleArticles(category);
+}
+
+// Curated sample articles (displayed when APIs unavailable / demo mode)
+function getSampleArticles(cat) {
+  const banks = {
+    general: [
+      { title:'Global Leaders Convene for Emergency Climate Summit', description:'World leaders gathered in Geneva today for an emergency summit on accelerating climate action, with over 140 nations pledging to cut emissions by 50% before 2035. The agreement represents the most ambitious multinational climate commitment to date.', source:{name:'Reuters'}, publishedAt: new Date(Date.now()-1800000).toISOString(), url:'#', urlToImage:null, _emoji:'🌍' },
+      { title:'Breakthrough in Quantum Communication Achieved by MIT Researchers', description:'Scientists at MIT have demonstrated quantum-encrypted data transmission over 1,000 kilometers of standard fiber optic cables, breaking all previous distance records and paving the way for an unhackable global internet.', source:{name:'Nature'}, publishedAt: new Date(Date.now()-3600000).toISOString(), url:'#', urlToImage:null, _emoji:'🔬' },
+      { title:'WHO Declares New Global Health Initiative to Eliminate Malaria by 2035', description:'The World Health Organization launched a $30 billion initiative to eradicate malaria across sub-Saharan Africa using advanced mRNA vaccine technology, drone delivery networks, and AI-powered outbreak prediction systems.', source:{name:'AP News'}, publishedAt: new Date(Date.now()-7200000).toISOString(), url:'#', urlToImage:null, _emoji:'🏥' },
+      { title:'Major Central Banks Signal Coordinated Rate Cut Strategy', description:'The Federal Reserve, ECB, and Bank of England issued rare joint guidance indicating synchronized interest rate reductions over Q3, triggering a global equity rally and boosting emerging market currencies.', source:{name:'Financial Times'}, publishedAt: new Date(Date.now()-10800000).toISOString(), url:'#', urlToImage:null, _emoji:'📉' },
+      { title:'SpaceX Successfully Lands Starship on Mars for First Time', description:'In a historic achievement, SpaceX\'s Starship completed its first uncrewed Mars landing, transmitting high-definition footage from the Martian surface. The mission carries scientific instruments and precursor technology for future crewed missions.', source:{name:'The Verge'}, publishedAt: new Date(Date.now()-14400000).toISOString(), url:'#', urlToImage:null, _emoji:'🚀' },
+      { title:'UN Security Council Passes Landmark AI Governance Resolution', description:'A unanimous UN Security Council resolution established the first global framework for artificial intelligence governance, mandating transparency requirements and safety audits for frontier AI systems deployed by nation-states.', source:{name:'BBC News'}, publishedAt: new Date(Date.now()-18000000).toISOString(), url:'#', urlToImage:null, _emoji:'🤖' },
+    ],
+    technology: [
+      { title:'Apple Unveils Neural Processing Chip 10x Faster Than Previous Generation', description:'Apple\'s new M4 Ultra chip features a dedicated neural engine capable of running large language models entirely on-device, marking a significant milestone in edge AI computing. The chip is expected to power the next iPhone lineup.', source:{name:'TechCrunch'}, publishedAt: new Date(Date.now()-2700000).toISOString(), url:'#', urlToImage:null, _emoji:'🍎' },
+      { title:'Google DeepMind Solves 50-Year-Old Protein Folding Mystery', description:'DeepMind researchers have published findings resolving a fundamental mystery in protein dynamics that eluded scientists for decades. The breakthrough could accelerate drug discovery for cancer and neurodegenerative diseases.', source:{name:'Wired'}, publishedAt: new Date(Date.now()-5400000).toISOString(), url:'#', urlToImage:null, _emoji:'🧬' },
+      { title:'Open-Source AI Model Surpasses GPT-4 on All Major Benchmarks', description:'A coalition of European AI labs released an open-source language model that outperforms all proprietary competitors on reasoning, coding, and multilingual tasks, reigniting debates about the democratization of AI.', source:{name:'Ars Technica'}, publishedAt: new Date(Date.now()-9000000).toISOString(), url:'#', urlToImage:null, _emoji:'🧠' },
+      { title:'Samsung Launches World\'s First Rollable Smartphone', description:'Samsung Galaxy Roll features a display that expands from phone to tablet size using micro-LED flexible technology. The device, priced at $1,899, is already seeing record pre-orders in Asian markets.', source:{name:'The Verge'}, publishedAt: new Date(Date.now()-12600000).toISOString(), url:'#', urlToImage:null, _emoji:'📱' },
+    ],
+    business: [
+      { title:'NVIDIA Market Cap Crosses $5 Trillion, Now World\'s Largest Company', description:'NVIDIA surpassed Apple and Microsoft to become the world\'s most valuable company, driven by insatiable demand for its H200 GPUs powering AI datacenters globally. The stock has risen 600% in two years.', source:{name:'Bloomberg'}, publishedAt: new Date(Date.now()-3600000).toISOString(), url:'#', urlToImage:null, _emoji:'📊' },
+      { title:'Amazon Acquires Slack in $40 Billion All-Stock Deal', description:'The surprise acquisition, announced after markets closed, would combine Amazon\'s AWS cloud dominance with Slack\'s enterprise communication platform, directly challenging Microsoft Teams and Google Workspace.', source:{name:'WSJ'}, publishedAt: new Date(Date.now()-7200000).toISOString(), url:'#', urlToImage:null, _emoji:'💼' },
+    ],
+    science: [
+      { title:'James Webb Telescope Discovers Potentially Habitable Ocean World', description:'Astronomers using JWST have detected chemical signatures of liquid water oceans and biological precursor molecules in the atmosphere of a rocky exoplanet 42 light-years away, marking the most promising sign of extraterrestrial life yet.', source:{name:'NASA'}, publishedAt: new Date(Date.now()-5400000).toISOString(), url:'#', urlToImage:null, _emoji:'🔭' },
+      { title:'Scientists Achieve Room-Temperature Superconductivity at Atmospheric Pressure', description:'A team at the University of Rochester confirmed room-temperature superconductivity in a novel hydrogen-rich compound, a discovery that could transform energy transmission, MRI technology, and quantum computing.', source:{name:'Science'}, publishedAt: new Date(Date.now()-10800000).toISOString(), url:'#', urlToImage:null, _emoji:'⚡' },
+    ],
+    health: [
+      { title:'mRNA Cancer Vaccine Shows 93% Efficacy in Phase III Trial', description:'Moderna and Merck\'s personalized mRNA cancer vaccine demonstrated 93% efficacy in preventing melanoma recurrence in a landmark Phase III trial involving 1,800 patients. FDA approval is expected within 18 months.', source:{name:'NEJM'}, publishedAt: new Date(Date.now()-3600000).toISOString(), url:'#', urlToImage:null, _emoji:'💉' },
+    ],
+    sports: [
+      { title:'FIFA Announces Record $12 Billion Prize Pool for 2026 World Cup', description:'FIFA confirmed the 2026 World Cup, hosted jointly by the USA, Canada, and Mexico, will feature a record $12 billion prize pool and expanded 48-team format. Ticket demand has already exceeded 400 million requests.', source:{name:'ESPN'}, publishedAt: new Date(Date.now()-7200000).toISOString(), url:'#', urlToImage:null, _emoji:'⚽' },
+    ],
+    entertainment: [
+      { title:'Netflix Greenlit 200-Episode Animated Series with $4 Billion Budget', description:'Netflix announced the most expensive television production in history — an animated fantasy epic spanning 200 episodes with a $4 billion budget, created by the teams behind Studio Ghibli and Pixar veterans.', source:{name:'Variety'}, publishedAt: new Date(Date.now()-5400000).toISOString(), url:'#', urlToImage:null, _emoji:'🎬' },
+    ]
+  };
+
+  // Fill missing categories with general
+  return (banks[cat] && banks[cat].length > 0) ? banks[cat] : banks.general;
+}
+
+// ── STATE ──
+let currentCat = 'general';
+let allArticles = [];
+let filtered = [];
+let searchQ = '';
+
+// ── RENDER ──
+function renderFeed(articles) {
+  const featuredArea = document.getElementById('featuredArea');
+  const feedGrid = document.getElementById('feedGrid');
+  const skeleton = document.getElementById('skeletonLoader');
+  skeleton.style.display = 'none';
+
+  if (!articles.length) {
+    feedGrid.innerHTML = `<div style="text-align:center;padding:60px;color:var(--muted)">No articles found.</div>`;
+    featuredArea.innerHTML = '';
+    return;
+  }
+
+  // Featured
+  const f = articles[0];
+  featuredArea.innerHTML = `
+    <div class="featured-card" onclick="openArticle(${0})">
+      ${f.urlToImage
+        ? `<img class="featured-img" src="${safe(f.urlToImage)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="" />`
+        : ''}
+      <div class="featured-img-placeholder" style="${f.urlToImage ? 'display:none' : ''}">${f._emoji || CAT_EMOJI[currentCat]}</div>
+      <div class="featured-body">
+        <div class="source-tag">📰 ${safe(f.source.name)}</div>
+        <h2 class="featured-title">${safe(f.title)}</h2>
+        <p class="featured-desc">${safe(f.description || '')}</p>
+        <div class="card-meta">
+          <span>${timeAgo(f.publishedAt)}</span>
+          <span class="dot">•</span>
+          <span>${safe(f.source.name)}</span>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Feed
+  const rest = articles.slice(1);
+  feedGrid.innerHTML = `
+    <div class="section-title">Latest Stories</div>
+    <div class="news-grid">
+      ${rest.map((a,i) => `
+        <a class="news-card" href="javascript:void(0)" onclick="openArticle(${i+1})">
+          <div>
+            <div class="news-card-source">${safe(a.source.name)}</div>
+            <div class="news-card-title">${safe(a.title)}</div>
+            <div class="news-card-time">${timeAgo(a.publishedAt)}</div>
+          </div>
+          ${a.urlToImage
+            ? `<img class="news-card-thumb" src="${safe(a.urlToImage)}" onerror="this.outerHTML='<div class=news-card-thumb-placeholder>${a._emoji || '📰'}</div>'" alt="" />`
+            : `<div class="news-card-thumb-placeholder">${a._emoji || CAT_EMOJI[currentCat]}</div>`
+          }
+        </a>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderTrending(articles) {
+  const list = document.getElementById('trendingList');
+  list.innerHTML = articles.slice(0,5).map((a,i) => `
+    <div class="trending-item" onclick="openArticle(${i})">
+      <div class="trend-num">${String(i+1).padStart(2,'0')}</div>
+      <div>
+        <div class="trend-text">${safe(a.title)}</div>
+        <div class="trend-source">${safe(a.source.name)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderTicker(articles) {
+  const wrap = document.getElementById('tickerWrap');
+  const track = document.getElementById('tickerTrack');
+  const items = articles.slice(0,6).map(a => `<span class="ticker-item">${safe(a.title)}</span>`).join('');
+  track.innerHTML = items + items; // duplicate for seamless loop
+  wrap.style.display = 'flex';
+}
+
+// ── MODAL ──
+function openArticle(idx) {
+  const a = filtered[idx] || allArticles[idx];
+  if (!a) return;
+  const modal = document.getElementById('modalOverlay');
+  document.getElementById('modalContent').innerHTML = `
+    <div class="modal-source">📰 ${safe(a.source.name)}</div>
+    <h2 class="modal-title">${safe(a.title)}</h2>
+    <div class="modal-meta">
+      <span>${timeAgo(a.publishedAt)}</span>
+      <span>•</span>
+      <span>${safe(a.source.name)}</span>
+    </div>
+    <p class="modal-desc">${safe(a.description || 'No description available.')}</p>
+    ${a.url && a.url !== '#'
+      ? `<a class="modal-link" href="${safe(a.url)}" target="_blank" rel="noopener">
+          Read full article
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+        </a>`
+      : `<div style="color:var(--muted);font-size:.85rem">Full article link unavailable in demo mode.</div>`
+    }
+  `;
+  modal.classList.add('open');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+}
+
+// ── LOAD ──
+async function load(cat, q = '') {
+  currentCat = cat;
+  searchQ = q;
+  document.getElementById('skeletonLoader').style.display = 'block';
+  document.getElementById('featuredArea').innerHTML = '';
+  document.getElementById('feedGrid').innerHTML = '';
+  document.getElementById('statusText').textContent = `Loading ${cat} news…`;
+
+  allArticles = await fetchNews(cat, q);
+  filtered = allArticles;
+  renderFeed(filtered);
+  renderTrending(filtered);
+  renderTicker(filtered);
+
+  const count = filtered.length;
+  document.getElementById('statusText').textContent = `${count} articles loaded · Updated just now`;
+}
+
+// ── CATEGORY BUTTONS ──
+document.getElementById('catBar').addEventListener('click', e => {
+  const btn = e.target.closest('.cat-btn');
+  if (!btn) return;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  load(btn.dataset.cat);
+});
+
+// ── SEARCH ──
+let searchTimer;
+document.getElementById('searchInput').addEventListener('input', e => {
+  clearTimeout(searchTimer);
+  const q = e.target.value.trim();
+  searchTimer = setTimeout(() => {
+    if (q.length > 2) load(currentCat, q);
+    else if (!q) load(currentCat);
+  }, 500);
+});
+
+// ── BOTTOM NAV ──
+function setNav(el, cat) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.cat-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.cat === cat);
+  });
+  load(cat);
+}
+
+// ── PWA: Service Worker ──
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+
+// ── PWA: Install Banner ──
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('installBtn').classList.add('visible');
+});
+
+document.getElementById('installBtn').addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  if (outcome === 'accepted') showToast('✅ Pulse installed!');
+  deferredPrompt = null;
+  document.getElementById('installBtn').classList.remove('visible');
+});
+
+// ── OFFLINE DETECTION ──
+function updateOnline() {
+  document.getElementById('offlineBanner').classList.toggle('show', !navigator.onLine);
+}
+window.addEventListener('online', updateOnline);
+window.addEventListener('offline', updateOnline);
+updateOnline();
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── AUTO REFRESH every 5 min ──
+setInterval(() => load(currentCat, searchQ), 300000);
+
+// ── INIT ──
+load('general');
+</script>
+</body>
+</html>
